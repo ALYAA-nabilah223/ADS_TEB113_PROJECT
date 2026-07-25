@@ -69,7 +69,7 @@ void baseline_borrow(string book_id) {
                 catalog[id].available_copies--;
                 cout<<"Successfully Borrowed! (Scanned "<<steps<<" books)\n";
             } else {
-                cout<<"Uhh, Book is Unavailable!!. (Scanned"<<steps<<" books)\n";
+                cout<<"Uhh, Book is Unavailable!!. (Scanned "<<steps<<" books)\n";
             }
             break;
         }
@@ -84,17 +84,43 @@ void optimized_borrow(string student_id, string book_id) {
     
     if (book.available_copies > 0) {
         book.available_copies--;
-        cout<<"SuccessfullyBorrowed! (1 lookup)\n";
+        cout<<"Successfully Borrowed! (1 lookup)\n";
     } else {
         book.waitlist.push(student_id);
         cout<<"Successfully added "<<student_id<<" to queue. (Pos: "<< book.waitlist.size()<<")\n";
     }
 }
 
+//Return: Optimized Function O(1)
+void optimized_return(string book_id) {
+    cout << "\n1. RETURN & NOTIFY\n";
+    Book &book = catalog[book_id];
+    book.available_copies++;
+
+    if (!book.waitlist.empty()) {
+        string next = book.waitlist.front();
+        book.waitlist.pop();
+        cout<<"Notifying "<<next<<" (Queue left: "<<book.waitlist.size()<< ")\n";
+    } else {
+        cout<<"Book Returned. No one waiting.\n";
+    }
+}
+
+
 int main() {
-    cout<<"Testing file loader\n";
     loadBooksFromFile();
-    cout<<"Total books in catalog: "<<catalog.size()<<"\n";
-    cout<<"Total book IDs in vector: "<<bookIds.size()<<"\n";
+    cout << "\nInitial Waitlist for B0001: "<< catalog["B0001"].waitlist.size()<< "\n";
+    //1. Test Baseline Borrow
+    baseline_borrow("B0001");
+
+    //2. Test Optimized Borrow
+    optimized_borrow("S1006", "B0001");
+
+    //3. Test Optimized Return
+    optimized_return("B0001");
+
+    //Final Output:
+    cout << "\nFinal Waitlist for B0001: "<<catalog["B0001"].waitlist.size()<<"\n";
+    system("pause");
     return 0;
 }
