@@ -4,6 +4,8 @@
 #include <fstream>
 #include <sstream>
 #include <vector>
+#include <chrono>
+
 using namespace std;
 
 struct Book {
@@ -62,6 +64,8 @@ void loadBooksFromFile() {
 void baseline_borrow(string book_id) {
     int steps = 0;
     cout<<"\n1. BASELINE (O(n))\n";
+    auto start = chrono::high_resolution_clock::now();
+
     for (string id : bookIds) {
         steps++;
         if (id == book_id) {
@@ -74,12 +78,17 @@ void baseline_borrow(string book_id) {
             break;
         }
     }
+    auto end = chrono::high_resolution_clock::now();
+    auto duration = chrono::duration_cast<chrono::microseconds>(end - start);
+    cout<<"Time taken: "<<duration.count()<<" microseconds\n";
     
 }
 
 //Borrow: Optimized Function O(1)
 void optimized_borrow(string student_id, string book_id) {
     cout<<"\n2. OPTIMIZED (O(1))\n";
+    auto start = chrono::high_resolution_clock::now();
+
     Book &book = catalog[book_id];
     
     if (book.available_copies > 0) {
@@ -89,6 +98,10 @@ void optimized_borrow(string student_id, string book_id) {
         book.waitlist.push(student_id);
         cout<<"Successfully added "<<student_id<<" to queue. (Pos: "<< book.waitlist.size()<<")\n";
     }
+
+    auto end = chrono::high_resolution_clock::now();
+    auto duration = chrono::duration_cast<chrono::microseconds>(end - start);
+    cout<<"Time taken: "<<duration.count()<<" microseconds\n";
 }
 
 //Return: Optimized Function O(1)
