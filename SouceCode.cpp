@@ -212,19 +212,33 @@ void displayBooks() {
 
 
 int main() {
+    cout<< "\n========================================\n";
+    cout<< "LIBRARY BOOK BORROWING SYSTEM\n";
+    cout<< "BASELINE (O(n)) vs OPTIMIZED (O(1))\n";
+    cout<< "========================================\n";
+
     loadBooksFromFile();
-    cout << "\nInitial Waitlist for B0001: "<< catalog["B0001"].waitlist.size()<< "\n";
-    //1. Test Baseline Borrow
+
+    cout<< "\nInitial Waitlist for B0001: "<< catalog["B0001"].waitlist.size()<< " student(s)\n";
+
+    //1. Test Search (O(1) - Hash Map Lookup)
+    cout<< "\nTEST 1: SEARCH BOOK (O(1))\n";
+    searchBook("B0001");
+
+    //2. Test Baseline Borrow (O(n) - Linear Scan)
+    cout << "\nTEST 2: BASELINE BORROW (O(n))\n";
     baseline_borrow("B0001");
 
-    //2. Test Optimized Borrow
+    //3. Test Optimized Borrow (O(1) - Hash Map + Queue)
+    cout<< "\nTEST 3: OPTIMIZED BORROW (O(1))\n";
     optimized_borrow("S1006", "B0001");
 
-    //3. Test Optimized Return
+    //4. Test Optimized Return (O(1) - Hash Map + Queue)
+    cout<< "\nTEST 4: OPTIMIZED RETURN (O(1))\n";
     optimized_return("B0001");
 
-    //Final Output:
-    cout << "\nFinal Waitlist for B0001: "<<catalog["B0001"].waitlist.size()<<"\n";
+    //Final Output
+    cout << "\nFinal Waitlist for B0001: " << catalog["B0001"].waitlist.size() << " student(s)\n";
     system("pause");
     return 0;
 }
