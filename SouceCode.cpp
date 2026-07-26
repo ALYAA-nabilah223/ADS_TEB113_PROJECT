@@ -223,7 +223,7 @@ int main() {
     int choice;
 
     do {
-        cout<<"1. Search Book (O(1))\n";
+        cout<<"\n1. Search Book (O(1))\n";
         cout<<"2. Borrow Book - BASELINE (O(n))\n";
         cout<<"3. Borrow Book - OPTIMIZED (O(1))\n";
         cout<<"4. Return Book (O(1))\n";
