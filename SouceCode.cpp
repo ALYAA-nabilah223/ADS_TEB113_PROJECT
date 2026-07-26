@@ -160,16 +160,34 @@ void optimized_borrow(string student_id, string book_id) {
 
 //Return: Optimized Function O(1)
 void optimized_return(string book_id) {
-    cout << "\n1. RETURN & NOTIFY\n";
-    Book &book = catalog[book_id];
-    book.available_copies++;
+    cout<<"\n--- RETURN & NOTIFY ---\n";
+    auto start = chrono::high_resolution_clock::now();
 
-    if (!book.waitlist.empty()) {
-        string next = book.waitlist.front();
-        book.waitlist.pop();
-        cout<<"Notifying "<<next<<" (Queue left: "<<book.waitlist.size()<< ")\n";
+    auto it = catalog.find(book_id);
+
+    if (it == catalog.end()) {
+        auto end = chrono::high_resolution_clock::now();
+        auto duration = chrono::duration_cast<chrono::microseconds>(end - start);
+        cout<<"Book not found.\n";
+        cout<<"Time taken: "<< duration.count()<<" microseconds\n";
+        return;
+    }
+
+    if (!it->second.waitlist.empty()) {
+        string student = it->second.waitlist.front();
+        it->second.waitlist.pop();
+        auto end = chrono::high_resolution_clock::now();
+        auto duration = chrono::duration_cast<chrono::microseconds>(end - start);
+        cout<<"Book automatically assigned to "<< student << endl;
+        cout<<"Remaining in queue: "<< it->second.waitlist.size()<< " student(s)\n";
+        cout<<"Time taken: "<< duration.count() << " microseconds\n";
     } else {
-        cout<<"Book Returned. No one waiting.\n";
+        it->second.available_copies++;
+        auto end = chrono::high_resolution_clock::now();
+        auto duration = chrono::duration_cast<chrono::microseconds>(end - start);
+        cout<<"Book returned successfully.\n";
+        cout<<"Available copies: "<< it->second.available_copies << "/" << it->second.total_copies << endl;
+        cout<<"Time taken: "<< duration.count() << " microseconds\n";
     }
 }
 
