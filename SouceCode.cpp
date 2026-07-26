@@ -78,6 +78,28 @@ void saveBooks(string filename)
     cout<<"Saved "<<count<<" books to "<<filename<<"\n";
 }
 
+//Search book by ID
+void searchBook(string id) {
+    auto start = chrono::high_resolution_clock::now();
+
+    auto it = catalog.find(id);
+
+    auto end = chrono::high_resolution_clock::now();
+    auto duration = chrono::duration_cast<chrono::microseconds>(end - start);
+
+    if (it == catalog.end()) {
+        cout << "Book not found.\n";
+        cout << "Search time: " << duration.count() << " microseconds\n";
+        return;
+    }
+
+    cout << "Book ID : " << it->second.id << endl;
+    cout << "Title : " << it->second.title << endl;
+    cout << "Available : " << it->second.available_copies << "/" << it->second.total_copies << endl;
+    cout << "Waitlist : " << it->second.waitlist.size() << " student(s)" << endl;
+    cout << "Search time: " << duration.count() << " microseconds\n";
+}
+
 
 //Borrow: Base Function O(n)
 void baseline_borrow(string book_id) {
