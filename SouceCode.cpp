@@ -127,22 +127,35 @@ void baseline_borrow(string book_id) {
 
 //Borrow: Optimized Function O(1)
 void optimized_borrow(string student_id, string book_id) {
-    cout<<"\n2. OPTIMIZED (O(1))\n";
+    cout<<"\n--- OPTIMIZED (O(1)) ---\n";
     auto start = chrono::high_resolution_clock::now();
 
-    Book &book = catalog[book_id];
-    
-    if (book.available_copies > 0) {
-        book.available_copies--;
-        cout<<"Successfully Borrowed! (1 lookup)\n";
-    } else {
-        book.waitlist.push(student_id);
-        cout<<"Successfully added "<<student_id<<" to queue. (Pos: "<< book.waitlist.size()<<")\n";
+    auto it = catalog.find(book_id);
+
+    if (it == catalog.end()) {
+        auto end = chrono::high_resolution_clock::now();
+        auto duration = chrono::duration_cast<chrono::microseconds>(end - start);
+        cout<<"Book not found.\n";
+        cout<<"Time taken: " << duration.count()<< " microseconds\n";
+        return;
     }
 
-    auto end = chrono::high_resolution_clock::now();
-    auto duration = chrono::duration_cast<chrono::microseconds>(end - start);
-    cout<<"Time taken: "<<duration.count()<<" microseconds\n";
+    if (it->second.available_copies > 0) {
+        it->second.available_copies--;
+        auto end = chrono::high_resolution_clock::now();
+        auto duration = chrono::duration_cast<chrono::microseconds>(end - start);
+        cout<<"Successfully Borrowed! (1 lookup)\n";
+        cout<<"Student: " << student_id << endl;
+        cout<<"Remaining copies: "<< it->second.available_copies<< "/"<< it->second.total_copies<<endl;
+        cout<<"Time taken: " << duration.count()<<" microseconds\n";
+    } else {
+        it->second.waitlist.push(student_id);
+        auto end = chrono::high_resolution_clock::now();
+        auto duration = chrono::duration_cast<chrono::microseconds>(end - start);
+        cout<<"Book unavailable. Added to waitlist.\n";
+        cout<<"Student: "<< student_id<< " (Position: "<< it->second.waitlist.size() << ")\n";
+        cout<<"Time taken: "<< duration.count()<<" microseconds\n";
+    }
 }
 
 //Return: Optimized Function O(1)
