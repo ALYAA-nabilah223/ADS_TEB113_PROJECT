@@ -191,6 +191,25 @@ void optimized_return(string book_id) {
     }
 }
 
+//Additional function to display all books in the catalog
+void displayBooks() {
+    cout<<"\\nBOOK LIST\\n";
+    cout<<"----------------------------------------\\n";
+
+    for (auto &b : catalog) {
+        cout<<b.second.id << " | "
+             << b.second.title << " | "
+             << b.second.available_copies
+             << "/"
+             << b.second.total_copies
+             << " | Waitlist: " << b.second.waitlist.size()
+             << endl;
+    }
+
+    cout<< "----------------------------------------\n";
+    cout<< "Total books: "<<catalog.size()<< endl;
+}
+
 
 int main() {
     loadBooksFromFile();
