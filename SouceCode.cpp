@@ -9,6 +9,7 @@
 using namespace std;
 
 struct Book {
+    string id;
     string title;
     int total_copies;
     int available_copies;
@@ -59,6 +60,24 @@ void loadBooksFromFile() {
     file.close();
     cout<<"Loaded "<<count<<" books from books.txt\n";
 }
+
+//Save books to file
+void saveBooks(string filename)
+{
+    ofstream file(filename);
+    int count = 0;
+    for (auto &b : catalog) {
+        file << b.second.id << "|";
+        file << b.second.title << "|";
+        file << b.second.total_copies << "|";
+        file << b.second.available_copies << "|" << endl;
+        count++;
+    }
+
+    file.close();
+    cout<<"Saved "<<count<<" books to "<<filename<<"\n";
+}
+
 
 //Borrow: Base Function O(n)
 void baseline_borrow(string book_id) {
