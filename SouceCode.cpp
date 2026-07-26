@@ -42,6 +42,7 @@ void loadBooksFromFile() {
         getline(ss, waitlistStr, '|');
 
         Book b;
+        b.id = id;
         b.title = title;
         b.total_copies = stoi(totalStr);
         b.available_copies = stoi(availStr);
@@ -233,21 +234,35 @@ int main() {
         cin>>choice;
 
         switch(choice) {
-            case 1:
-                searchBook();
-                break;
+            case 1:{
+                string id;
+                cout<<"Enter Book ID : ";
+                cin >> id;
+                searchBook(id);
+                break;}
 
-            case 2:
-                baseline_borrow();
-                break;
+            case 2:{
+                string id;
+                cout<<"Enter Book ID : ";
+                cin>>id;
+                baseline_borrow(id);
+                break;}
 
-            case 3:
-                optimized_borrow();
-                break;
+            case 3:{
+                string student_id, book_id;
+                cout<<"Enter Student ID : ";
+                cin>>student_id;
+                cout<<"Enter Book ID : ";
+                cin>>book_id;
+                optimized_borrow(student_id, book_id);
+                break;}
 
-            case 4:
-                optimized_return();
-                break;
+            case 4:{
+                string id;
+                cout<<"Enter Book ID : ";
+                cin>>id;
+                optimized_return(id);
+                break;}
 
             case 5:
                 displayBooks();
@@ -260,6 +275,7 @@ int main() {
 
             default:
                 cout<<"Invalid choice. Please try again.\n";
+                break;
         }
 
     } while(choice != 6);
