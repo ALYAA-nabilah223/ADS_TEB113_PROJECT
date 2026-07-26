@@ -219,26 +219,50 @@ int main() {
 
     loadBooksFromFile();
 
-    cout<< "\nInitial Waitlist for B0001: "<< catalog["B0001"].waitlist.size()<< " student(s)\n";
+    int choice;
 
-    //1. Test Search (O(1) - Hash Map Lookup)
-    cout<< "\nTEST 1: SEARCH BOOK (O(1))\n";
-    searchBook("B0001");
+    do {
+        cout<<"1. Search Book (O(1))\n";
+        cout<<"2. Borrow Book - BASELINE (O(n))\n";
+        cout<<"3. Borrow Book - OPTIMIZED (O(1))\n";
+        cout<<"4. Return Book (O(1))\n";
+        cout<<"5. Display All Books\n";
+        cout<<"6. Save & Exit\n";
+        cout<<"========================================\n";
+        cout<<"Choice : ";
+        cin>>choice;
 
-    //2. Test Baseline Borrow (O(n) - Linear Scan)
-    cout << "\nTEST 2: BASELINE BORROW (O(n))\n";
-    baseline_borrow("B0001");
+        switch(choice) {
+            case 1:
+                searchBook();
+                break;
 
-    //3. Test Optimized Borrow (O(1) - Hash Map + Queue)
-    cout<< "\nTEST 3: OPTIMIZED BORROW (O(1))\n";
-    optimized_borrow("S1006", "B0001");
+            case 2:
+                baseline_borrow();
+                break;
 
-    //4. Test Optimized Return (O(1) - Hash Map + Queue)
-    cout<< "\nTEST 4: OPTIMIZED RETURN (O(1))\n";
-    optimized_return("B0001");
+            case 3:
+                optimized_borrow();
+                break;
 
-    //Final Output
-    cout << "\nFinal Waitlist for B0001: " << catalog["B0001"].waitlist.size() << " student(s)\n";
-    system("pause");
+            case 4:
+                optimized_return();
+                break;
+
+            case 5:
+                displayBooks();
+                break;
+
+            case 6:
+                saveBooks("books.txt");
+                cout<<"Data saved. Goodbye!\n";
+                break;
+
+            default:
+                cout<<"Invalid choice. Please try again.\n";
+        }
+
+    } while(choice != 6);
+
     return 0;
 }
