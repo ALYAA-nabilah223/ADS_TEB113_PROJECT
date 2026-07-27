@@ -1385,6 +1385,7 @@ Add the group members below:
 |   2 | `Nur Alyaa Nabilah binti Mazlan` | `25014139` | `[Contribution]` |
 |   3 | `Ivy Rachel Richard` | `25014556` | `[Contribution]` |
 |   4 | `Ahmed Mohammed Mahmoud AbuAlrub` | `25005930` | `[Contribution]` |
+|   5 | `Mahiru Maisha Raiyena ` | `25008084` | `[Contribution]` |
 
 ---
 
@@ -1396,6 +1397,5 @@ Add the group members below:
 | Assignment           | Group Assignment               |
 | Project              | Library Book Borrowing System  |
 | Programming language | C++                            |
-| Lecturer             | `[Lecturer Name]`              |
-| Submission date      | `[Submission Date]`            |
-| Group                | `[Group Number]`               |
+| Lecturer             | `Dr Farahida Hanim Bt Mausor`              |
+| Group                | `Group 14`               |
