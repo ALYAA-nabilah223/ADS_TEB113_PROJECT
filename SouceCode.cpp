@@ -211,6 +211,49 @@ void displayBooks() {
     cout<< "Total books: "<<catalog.size()<< endl;
 }
 
+//Additional function: Performance Graph Data Generation
+void runPerformanceTest() {
+    cout<<"\n--- PERFORMANCE TEST ---\n";
+
+    vector<int> testSizes = {10,50,100,500,1000,2000,3000,4000,5000};
+    
+    ofstream dataFile("performance_data.csv");
+    dataFile<<"Books,BaselineSteps,BaselineTime,OptimizedTime\n";
+    
+    for (int size : testSizes) {
+        vector<string> testBookIds;
+        for (int i = 0; i < size && i < bookIds.size(); i++) {
+            testBookIds.push_back(bookIds[i]);
+        }
+        
+        cout<<"Testing with "<<size<<" books\n";
+        int steps = 0;
+        for (string id : testBookIds) {
+            steps++;
+            if (id == "B0001") break;
+        }
+        
+        auto start = chrono::high_resolution_clock::now();
+        for (string id : testBookIds) {
+            if (id == "B0001") break;
+        }
+        auto end = chrono::high_resolution_clock::now();
+        auto baselineTime = chrono::duration_cast<chrono::microseconds>(end - start);
+        
+        auto startOpt = chrono::high_resolution_clock::now();
+        auto it = catalog.find("B0001");
+        auto endOpt = chrono::high_resolution_clock::now();
+        auto optimizedTime = chrono::duration_cast<chrono::microseconds>(endOpt - startOpt);
+        
+        dataFile<<size<<","<<steps<<","<<baselineTime.count()<<","<<optimizedTime.count()<<"\n";
+        
+        cout<<"   Baseline: "<<steps<<" steps, "<<baselineTime.count()<<" μs\n";
+        cout<<"   Optimized: 1 step, "<<optimizedTime.count()<<" μs\n\n";
+    }
+    
+    dataFile.close();
+    cout<<"Data saved to 'performance_data.csv'\n";
+}
 
 int main() {
     cout<< "\n========================================\n";
@@ -219,7 +262,6 @@ int main() {
     cout<< "========================================\n";
 
     loadBooksFromFile();
-
     int choice;
 
     do {
@@ -279,6 +321,7 @@ int main() {
         }
 
     } while(choice != 6);
+
 
     return 0;
 }
