@@ -79,7 +79,39 @@ void saveBooks(string filename)
     cout<<"Saved "<<count<<" books to "<<filename<<"\n";
 }
 
-//Search book by ID
+// Search Book: Baseline
+void baseline_search(string book_id) {
+    int steps = 0;
+    cout<<"\n--- BASELINE SEARCH (O(n)) ---\n";
+
+    auto start = chrono::high_resolution_clock::now();
+
+    for (string id : bookIds) {
+        steps++;
+        if (id == book_id) {
+            auto end = chrono::high_resolution_clock::now();
+            auto duration = chrono::duration_cast<chrono::microseconds>(end - start);
+
+            cout<<"Book found!\n";
+            cout<<"Book ID : "<<catalog[id].id<<"\n";
+            cout<<"Title : "<<catalog[id].title<<"\n";
+            cout<<"Available : "<<catalog[id].available_copies<<"/"<<catalog[id].total_copies<<"\n";
+            cout<<"Waitlist : "<<catalog[id].waitlist.size()<<" student(s)\n";
+            cout<<"Scanned "<<steps<<" book(s).\n";
+            cout<<"Search time: "<<duration.count()<<" microseconds\n";
+            return;
+        }
+    }
+
+    auto end = chrono::high_resolution_clock::now();
+    auto duration = chrono::duration_cast<chrono::microseconds>(end - start);
+
+    cout<<"Book not found.\n";
+    cout<<"Scanned "<<steps<<" book(s).\n";
+    cout<<"Search time: "<<duration.count()<<" microseconds\n";
+}
+
+//Search Book: Optimized
 void searchBook(string id) {
     auto start = chrono::high_resolution_clock::now();
 
@@ -100,6 +132,7 @@ void searchBook(string id) {
     cout << "Waitlist : " << it->second.waitlist.size() << " student(s)" << endl;
     cout << "Search time: " << duration.count() << " microseconds\n";
 }
+
 
 
 //Borrow: Base Function O(n)
