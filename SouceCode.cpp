@@ -159,6 +159,45 @@ void optimized_borrow(string student_id, string book_id) {
     }
 }
 
+// Return: Baseline Function O(n)
+void baseline_return(string book_id) {
+    int steps = 0;
+    cout << "\n--- BASELINE RETURN (O(n)) ---\n";
+
+    auto start = chrono::high_resolution_clock::now();
+
+    for (string id : bookIds) {
+        steps++;
+
+        if (id == book_id) {
+
+            // No waitlist handling in the baseline approach
+            catalog[id].available_copies++;
+
+            auto end = chrono::high_resolution_clock::now();
+            auto duration =
+                chrono::duration_cast<chrono::microseconds>(end - start);
+
+            cout << "Book returned successfully.\n";
+            cout << "Available copies: "
+                 << catalog[id].available_copies
+                 << "/" << catalog[id].total_copies << endl;
+            cout << "Scanned " << steps << " book(s).\n";
+            cout << "Time taken: " << duration.count() << " microseconds\n";
+
+            return;
+        }
+    }
+
+    auto end = chrono::high_resolution_clock::now();
+    auto duration =
+        chrono::duration_cast<chrono::microseconds>(end - start);
+
+    cout << "Book not found.\n";
+    cout << "Scanned " << steps << " book(s).\n";
+    cout << "Time taken: " << duration.count() << " microseconds\n";
+}
+
 //Return: Optimized Function O(1)
 void optimized_return(string book_id) {
     cout<<"\n--- RETURN & NOTIFY ---\n";
@@ -256,10 +295,8 @@ void runPerformanceTest() {
 }
 
 int main() {
-    cout<< "\n========================================\n";
     cout<< "LIBRARY BOOK BORROWING SYSTEM\n";
     cout<< "BASELINE (O(n)) vs OPTIMIZED (O(1))\n";
-    cout<< "========================================\n";
 
     loadBooksFromFile();
     int choice;
@@ -268,9 +305,10 @@ int main() {
         cout<<"\n1. Search Book (O(1))\n";
         cout<<"2. Borrow Book - BASELINE (O(n))\n";
         cout<<"3. Borrow Book - OPTIMIZED (O(1))\n";
-        cout<<"4. Return Book (O(1))\n";
-        cout<<"5. Display All Books\n";
-        cout<<"6. Save & Exit\n";
+        cout << "4. Return Book - BASELINE (O(n))\n";
+        cout << "5. Return Book - OPTIMIZED (O(1))\n";
+        cout << "6. Display All Books\n";
+        cout << "7. Save & Exit\n";
         cout<<"========================================\n";
         cout<<"Choice : ";
         cin>>choice;
@@ -299,20 +337,29 @@ int main() {
                 optimized_borrow(student_id, book_id);
                 break;}
 
-            case 4:{
+            case 4: {
                 string id;
-                cout<<"Enter Book ID : ";
-                cin>>id;
-                optimized_return(id);
-                break;}
+                cout << "Enter Book ID : ";
+                cin >> id;
+                baseline_return(id);
+                break;
+            }
 
-            case 5:
+            case 5: {
+                string id;
+                cout << "Enter Book ID : ";
+                cin >> id;
+                optimized_return(id);
+                break;
+            }
+
+            case 6:
                 displayBooks();
                 break;
 
-            case 6:
+            case 7:
                 saveBooks("books.txt");
-                cout<<"Data saved. Goodbye!\n";
+                cout << "Data saved. Goodbye!\n";
                 break;
 
             default:
@@ -320,7 +367,7 @@ int main() {
                 break;
         }
 
-    } while(choice != 6);
+    } while(choice != 7);
 
 
     return 0;
