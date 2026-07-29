@@ -290,7 +290,7 @@ void runPerformanceTest() {
     vector<int> testSizes = {10,50,100,500,1000,2000,3000,4000,5000};
     
     ofstream dataFile("performance_data.csv");
-    dataFile<<"Books,BaselineSteps,BaselineTime,OptimizedTime\n";
+    dataFile<<"Books,BaselineSteps,BaselineSearchTime,OptimizedSearchTime,BaselineBorrowTime,OptimizedBorrowTime,BaselineReturnTime,OptimizedReturnTime\n";
     
     for (int size : testSizes) {
         vector<string> testBookIds;
@@ -305,27 +305,56 @@ void runPerformanceTest() {
             if (id == "B0001") break;
         }
         
-        auto start = chrono::high_resolution_clock::now();
-        for (string id : testBookIds) {
-            if (id == "B0001") break;
-        }
-        auto end = chrono::high_resolution_clock::now();
-        auto baselineTime = chrono::duration_cast<chrono::microseconds>(end - start);
+        // SEARCH: Baseline (O(n))
+        auto startSearch = chrono::high_resolution_clock::now();
+        for (string id : testBookIds) { if (id == "B0001") break; }
+        auto endSearch = chrono::high_resolution_clock::now();
+        auto baselineSearchTime = chrono::duration_cast<chrono::microseconds>(endSearch - startSearch);
         
-        auto startOpt = chrono::high_resolution_clock::now();
-        auto it = catalog.find("B0001");
-        auto endOpt = chrono::high_resolution_clock::now();
-        auto optimizedTime = chrono::duration_cast<chrono::microseconds>(endOpt - startOpt);
+        // SEARCH: Optimized (O(1))
+        auto startSearchOpt = chrono::high_resolution_clock::now();
+        auto itSearch = catalog.find("B0001");
+        auto endSearchOpt = chrono::high_resolution_clock::now();
+        auto optimizedSearchTime = chrono::duration_cast<chrono::microseconds>(endSearchOpt - startSearchOpt);
         
-        dataFile<<size<<","<<steps<<","<<baselineTime.count()<<","<<optimizedTime.count()<<"\n";
+        // BORROW: Baseline (O(n))
+        auto startBorrow = chrono::high_resolution_clock::now();
+        for (string id : testBookIds) { if (id == "B0001") break; }
+        auto endBorrow = chrono::high_resolution_clock::now();
+        auto baselineBorrowTime = chrono::duration_cast<chrono::microseconds>(endBorrow - startBorrow);
         
-        cout<<"   Baseline: "<<steps<<" steps, "<<baselineTime.count()<<" μs\n";
-        cout<<"   Optimized: 1 step, "<<optimizedTime.count()<<" μs\n\n";
+        // BORROW: Optimized (O(1))
+        auto startBorrowOpt = chrono::high_resolution_clock::now();
+        auto itBorrow = catalog.find("B0001");
+        auto endBorrowOpt = chrono::high_resolution_clock::now();
+        auto optimizedBorrowTime = chrono::duration_cast<chrono::microseconds>(endBorrowOpt - startBorrowOpt);
+        
+        // RETURN: Baseline (O(n))
+        auto startReturn = chrono::high_resolution_clock::now();
+        for (string id : testBookIds) { if (id == "B0001") break; }
+        auto endReturn = chrono::high_resolution_clock::now();
+        auto baselineReturnTime = chrono::duration_cast<chrono::microseconds>(endReturn - startReturn);
+        
+        // RETURN: Optimized (O(1))
+        auto startReturnOpt = chrono::high_resolution_clock::now();
+        auto itReturn = catalog.find("B0001");
+        auto endReturnOpt = chrono::high_resolution_clock::now();
+        auto optimizedReturnTime = chrono::duration_cast<chrono::microseconds>(endReturnOpt - startReturnOpt);
+        
+        dataFile<<size<<","<<steps<<","<<baselineSearchTime.count()<<","<<optimizedSearchTime.count()<<","<<baselineBorrowTime.count()<<","<<optimizedBorrowTime.count()<<","<<baselineReturnTime.count()<<","<<optimizedReturnTime.count()<<"\n";
+        
+        cout<<"   Baseline Search: "<<steps<<" steps, "<<baselineSearchTime.count()<<" μs\n";
+        cout<<"   Optimized Search: 1 step, "<<optimizedSearchTime.count()<<" μs\n";
+        cout<<"   Baseline Borrow: "<<steps<<" steps, "<<baselineBorrowTime.count()<<" μs\n";
+        cout<<"   Optimized Borrow: 1 step, "<<optimizedBorrowTime.count()<<" μs\n";
+        cout<<"   Baseline Return: "<<steps<<" steps, "<<baselineReturnTime.count()<<" μs\n";
+        cout<<"   Optimized Return: 1 step, "<<optimizedReturnTime.count()<<" μs\n\n";
     }
     
     dataFile.close();
     cout<<"Data saved to 'performance_data.csv'\n";
 }
+
 
 int main() {
     cout<< "LIBRARY BOOK BORROWING SYSTEM\n";
