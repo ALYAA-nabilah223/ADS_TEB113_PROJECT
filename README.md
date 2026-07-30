@@ -1379,13 +1379,13 @@ Overall, the optimised solution is more suitable for a large library catalogue b
 
 Add the group members below:
 
-| No. | Name            | Student ID     | Contribution     |
-| --: | --------------- | -------------- | ---------------- |
-|   1 | `Mohamamd Nazri Aizad bin Mohammad Nazroel` | `25014457` | `[Contribution]` |
-|   2 | `Nur Alyaa Nabilah binti Mazlan` | `25014139` | `[Contribution]` |
-|   3 | `Ivy Rachel Richard` | `25014556` | `[Contribution]` |
-|   4 | `Ahmed Mohammed Mahmoud AbuAlrub` | `25005930` | `[Contribution]` |
-|   5 | `Mahiru Maisha Raiyena ` | `25008084` | `[Contribution]` |
+| No. | Name            | Student ID     | 
+| --: | --------------- | -------------- | 
+|   1 | `Mohamamd Nazri Aizad bin Mohammad Nazroel` | `25014457` | 
+|   2 | `Nur Alyaa Nabilah binti Mazlan` | `25014139` | 
+|   3 | `Ivy Rachel Richard` | `25014556` | 
+|   4 | `Ahmed Mohammed Mahmoud AbuAlrub` | `25005930` |
+|   5 | `Mahiru Maisha Raiyena ` | `25008084` | 
 
 ---
 
