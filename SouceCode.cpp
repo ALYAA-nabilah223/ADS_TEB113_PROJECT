@@ -112,7 +112,8 @@ void baseline_search(string book_id) {
 }
 
 //Search Book: Optimized
-void searchBook(string id) {
+void optimized_search(string id) {
+    cout << "\n--- OPTIMIZED SEARCH (O(1)) ---\n";
     auto start = chrono::high_resolution_clock::now();
 
     auto it = catalog.find(id);
@@ -156,7 +157,7 @@ void baseline_borrow(string book_id) {
     auto end = chrono::high_resolution_clock::now();
     auto duration = chrono::duration_cast<chrono::microseconds>(end - start);
     cout<<"Time taken: "<<duration.count()<<" microseconds\n";
-    
+
 }
 
 //Borrow: Optimized Function O(1)
@@ -266,8 +267,8 @@ void optimized_return(string book_id) {
 
 //Additional function to display all books in the catalog
 void displayBooks() {
-    cout<<"\\nBOOK LIST\\n";
-    cout<<"----------------------------------------\\n";
+    cout<<"\nBOOK LIST\n";
+    cout<<"----------------------------------------\n";
 
     for (auto &b : catalog) {
         cout<<b.second.id << " | "
@@ -288,25 +289,25 @@ void runPerformanceTest() {
     cout<<"\n--- PERFORMANCE TEST ---\n";
 
     vector<int> testSizes = {10,50,100,500,1000,2000,3000,4000,5000};
-    
+
     ofstream dataFile("performance_data.csv");
     dataFile<<"Books,BaselineSearchSteps,OptimizedSearchSteps,BaselineBorrowSteps,OptimizedBorrowSteps,BaselineReturnSteps,OptimizedReturnSteps,BaselineSearchTime,OptimizedSearchTime,BaselineBorrowTime,OptimizedBorrowTime,BaselineReturnTime,OptimizedReturnTime\n";
-    
+
     for (int size : testSizes) {
         vector<string> testBookIds;
         for (int i = 0; i < size && i < bookIds.size(); i++) {
             testBookIds.push_back(bookIds[i]);
         }
-        
+
         cout<<"Testing with "<<size<<" books\n";
-        
-        
+
+
         int steps = 0;
         for (string id : testBookIds) {
             steps++;
             if (id == "B0001") break;
         }
-        
+
         // SEARCH: Baseline (O(n))
         auto startSearch = chrono::high_resolution_clock::now();
         int searchSteps = 0;
@@ -316,14 +317,14 @@ void runPerformanceTest() {
         }
         auto endSearch = chrono::high_resolution_clock::now();
         auto baselineSearchTime = chrono::duration_cast<chrono::microseconds>(endSearch - startSearch);
-        
+
         // SEARCH: Optimized (O(1))
         auto startSearchOpt = chrono::high_resolution_clock::now();
         auto itSearch = catalog.find("B0001");
         auto endSearchOpt = chrono::high_resolution_clock::now();
         auto optimizedSearchTime = chrono::duration_cast<chrono::microseconds>(endSearchOpt - startSearchOpt);
         int optimizedSearchSteps = 1;
-        
+
         // BORROW: Baseline (O(n))
         auto startBorrow = chrono::high_resolution_clock::now();
         int borrowSteps = 0;
@@ -333,14 +334,14 @@ void runPerformanceTest() {
         }
         auto endBorrow = chrono::high_resolution_clock::now();
         auto baselineBorrowTime = chrono::duration_cast<chrono::microseconds>(endBorrow - startBorrow);
-        
+
         // BORROW: Optimized (O(1))
         auto startBorrowOpt = chrono::high_resolution_clock::now();
         auto itBorrow = catalog.find("B0001");
         auto endBorrowOpt = chrono::high_resolution_clock::now();
         auto optimizedBorrowTime = chrono::duration_cast<chrono::microseconds>(endBorrowOpt - startBorrowOpt);
         int optimizedBorrowSteps = 1;
-        
+
         // RETURN: Baseline (O(n))
         auto startReturn = chrono::high_resolution_clock::now();
         int returnSteps = 0;
@@ -350,14 +351,14 @@ void runPerformanceTest() {
         }
         auto endReturn = chrono::high_resolution_clock::now();
         auto baselineReturnTime = chrono::duration_cast<chrono::microseconds>(endReturn - startReturn);
-        
+
         // RETURN: Optimized (O(1))
         auto startReturnOpt = chrono::high_resolution_clock::now();
         auto itReturn = catalog.find("B0001");
         auto endReturnOpt = chrono::high_resolution_clock::now();
         auto optimizedReturnTime = chrono::duration_cast<chrono::microseconds>(endReturnOpt - startReturnOpt);
         int optimizedReturnSteps = 1;
-        
+
         dataFile<<size<<","
                  <<searchSteps<<","<<optimizedSearchSteps<<","
                  <<borrowSteps<<","<<optimizedBorrowSteps<<","
@@ -365,7 +366,7 @@ void runPerformanceTest() {
                  <<baselineSearchTime.count()<<","<<optimizedSearchTime.count()<<","
                  <<baselineBorrowTime.count()<<","<<optimizedBorrowTime.count()<<","
                  <<baselineReturnTime.count()<<","<<optimizedReturnTime.count()<<"\n";
-        
+
         cout<<"   Baseline Search: "<<searchSteps<<" steps, "<<baselineSearchTime.count()<<" μs\n";
         cout<<"   Optimized Search: "<<optimizedSearchSteps<<" step, "<<optimizedSearchTime.count()<<" μs\n";
         cout<<"   Baseline Borrow: "<<borrowSteps<<" steps, "<<baselineBorrowTime.count()<<" μs\n";
@@ -373,7 +374,7 @@ void runPerformanceTest() {
         cout<<"   Baseline Return: "<<returnSteps<<" steps, "<<baselineReturnTime.count()<<" μs\n";
         cout<<"   Optimized Return: "<<optimizedReturnSteps<<" step, "<<optimizedReturnTime.count()<<" μs\n\n";
     }
-    
+
     dataFile.close();
     cout<<"Data saved to 'performance_data.csv'\n";
 }
@@ -387,72 +388,92 @@ int main() {
     int choice;
 
     do {
-        cout<<"\n1. Search Book (O(1))\n";
-        cout<<"2. Borrow Book - BASELINE (O(n))\n";
-        cout<<"3. Borrow Book - OPTIMIZED (O(1))\n";
-        cout << "4. Return Book - BASELINE (O(n))\n";
-        cout << "5. Return Book - OPTIMIZED (O(1))\n";
-        cout << "6. Display All Books\n";
-        cout << "7. Save & Exit\n";
+        cout<<"\n1. Search Book - BASELINE (O(n))\n";
+        cout <<"2. Search Book - OPTIMIZED (O(1))\n";
+        cout<<"3. Borrow Book - BASELINE (O(n))\n";
+        cout<<"4. Borrow Book - OPTIMIZED (O(1))\n";
+        cout << "5. Return Book - BASELINE (O(n))\n";
+        cout << "6. Return Book - OPTIMIZED (O(1))\n";
+        cout << "7. Display All Books\n";
+        cout << "8. Performance Test\n";
+        cout << "9. Save & Exit\n";
         cout<<"========================================\n";
         cout<<"Choice : ";
         cin>>choice;
 
         switch(choice) {
-            case 1:{
+            case 1: {
                 string id;
-                cout<<"Enter Book ID : ";
+                cout << "Enter Book ID: ";
                 cin >> id;
-                searchBook(id);
-                break;}
+                baseline_search(id);
+                break;
+            }
 
-            case 2:{
+            case 2: {
                 string id;
-                cout<<"Enter Book ID : ";
-                cin>>id;
-                baseline_borrow(id);
-                break;}
+                cout << "Enter Book ID: ";
+                cin >> id;
+                optimized_search(id);
+                break;
+            }
 
-            case 3:{
-                string student_id, book_id;
-                cout<<"Enter Student ID : ";
-                cin>>student_id;
-                cout<<"Enter Book ID : ";
-                cin>>book_id;
-                optimized_borrow(student_id, book_id);
-                break;}
+            case 3: {
+                string id;
+                cout << "Enter Book ID: ";
+                cin >> id;
+                baseline_borrow(id);
+                break;
+            }
 
             case 4: {
-                string id;
-                cout << "Enter Book ID : ";
-                cin >> id;
-                baseline_return(id);
+                string student_id;
+                string book_id;
+
+                cout << "Enter Student ID: ";
+                cin >> student_id;
+
+                cout << "Enter Book ID: ";
+                cin >> book_id;
+
+                optimized_borrow(student_id, book_id);
                 break;
             }
 
             case 5: {
                 string id;
-                cout << "Enter Book ID : ";
+                cout << "Enter Book ID: ";
+                cin >> id;
+                baseline_return(id);
+                break;
+            }
+
+            case 6: {
+                string id;
+                cout << "Enter Book ID: ";
                 cin >> id;
                 optimized_return(id);
                 break;
             }
 
-            case 6:
+            case 7:
                 displayBooks();
                 break;
 
-            case 7:
+            case 8:
+                runPerformanceTest();
+                break;
+
+            case 9:
                 saveBooks("books.txt");
-                cout << "Data saved. Goodbye!\n";
                 break;
 
             default:
-                cout<<"Invalid choice. Please try again.\n";
+                cout << "Invalid choice!\n";
                 break;
         }
 
-    } while(choice != 7);
+    } while(choice != 9);
 
 
     return 0;
