@@ -398,8 +398,17 @@ int main() {
         cout << "8. Performance Test\n";
         cout << "9. Save & Exit\n";
         cout<<"========================================\n";
-        cout<<"Choice : ";
-        cin>>choice;
+        cout << "Choice : ";
+
+        if (!(cin >> choice))
+        {
+            cout << "Invalid input! Please enter a number from 1 to 9.\n";
+
+            cin.clear();                      
+            cin.ignore(10000, '\n');         
+
+            continue;                        
+        }
 
         switch(choice) {
             case 1: {
