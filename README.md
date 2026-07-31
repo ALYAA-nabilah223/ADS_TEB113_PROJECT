@@ -1377,7 +1377,6 @@ Overall, the optimised solution is more suitable for a large library catalogue b
 
 ## 30. Group Members
 
-Add the group members below:
 
 | No. | Name            | Student ID     | 
 | --: | --------------- | -------------- | 
